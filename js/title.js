@@ -44,7 +44,7 @@ game.TitleScreen = me.ScreenObject.extend({
         // enable the keyboard
         me.input.bindKey(me.input.KEY.ENTER, "enter", true);
  
- 
+        game.characterWindow.show();
     },
  
     // some callback for the tween objects
@@ -60,7 +60,7 @@ game.TitleScreen = me.ScreenObject.extend({
     update: function() {
         // enter pressed ?
         if (me.input.isKeyPressed('enter')) {
-            me.state.change(me.state.PLAY);
+            //me.state.change(me.state.PLAY);
         }
         return true;
     },
@@ -69,8 +69,10 @@ game.TitleScreen = me.ScreenObject.extend({
     draw: function(context) {
         context.drawImage(this.title, 0, 0);
  
-        this.font.draw(context, "PRESS ENTER TO PLAY", 20, 240);
+        //this.font.draw(context, "PRESS ENTER TO PLAY", 20, 240);
         this.scrollerfont.draw(context, this.scroller, this.scrollerpos, 440);
+        
+        
     },
  
     // destroy function

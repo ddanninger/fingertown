@@ -12,7 +12,8 @@
         <!-- Canvas placeholder -->
 		<div id="screen">
 			<!-- Dialog placeholder -->
-    		<div id="dialogLayer"></div>
+			<div id="characterDialogLayer" class="dialog"></div>
+    		<div id="dialogLayer" class="dialog"></div>
 		</div>
         <script src="js/lib/jquery.js"></script>
         
@@ -37,7 +38,7 @@
         
 		
 		<script type="text/javascript" src="js/entities.js"></script>
-
+<script type="text/javascript" src="js/loading.js"></script>
         <script type="text/javascript" src="js/title.js"></script>
          <script type="text/javascript" src="js/window.js"></script>
         <script type="text/javascript" src="js/play.js"></script> 
@@ -46,6 +47,7 @@
 		<script type="text/javascript">
 			window.onReady(function onReady() {
 				game.onload();
+				
 
 				// Mobile browser hacks
 				if (me.sys.isMobile && !navigator.isCocoonJS) {

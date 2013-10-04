@@ -19,8 +19,13 @@ game.PlayerEntity = me.ObjectEntity.extend({
     init: function(x, y, settings) {
     	var self = this;
         // call the constructor
+    	if (game.character == "female")
+    		settings.image="female"; 
+    	else
+    		settings.image="male"; 
+    	
         this.parent(x, y, settings);
- 
+        
         // set the default horizontal & vertical speed (accel vector)
         //this.setVelocity(3, 15);
         //this.setFriction(0.5, 0.5);
@@ -34,7 +39,8 @@ game.PlayerEntity = me.ObjectEntity.extend({
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         
-        this.direction = 'left';
+        this.direction = 'down';
+        
         
         // Change Inventory and question layer position
         this.layerPosition = "right";
@@ -55,6 +61,8 @@ game.PlayerEntity = me.ObjectEntity.extend({
 		    console.log(event.pointerId, event.gameX, event.gameY);
 		    self.mouseClick(event);
     	});
+		
+		this.renderable.setCurrentAnimation('down');
     },
  
     moveTo: false,

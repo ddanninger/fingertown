@@ -1,4 +1,86 @@
 
+game.CharacterWindow =  Object.extend({
+    "init" : function init() {
+        this.characterWindowShowing = false;
+
+        console.log('Init character class...');
+    },
+    
+    "isShowing" : function isShowing(){
+        return this.characterWindowShowing;
+    },
+    
+    "show": function show() {
+    		var self = this;
+            if (!this.characterWindowShowing){           
+            	
+                 // all help screen
+                 var $htmlInner = ('<div id="characterScreen"><ul><li><a href="javascript:;" class="female" data-value="female"><img src="images/female.png"></a></li><li><a href="javascript:;" class="male" data-value="male"><img src="images/male.png"></a></li></ul><br><a href="javascript:;" class="next">Next</a></div>');
+                    
+                $('#characterDialogLayer').append($htmlInner);
+                
+                $('#characterDialogLayer').fadeIn(500);
+                
+                $('#characterDialogLayer .next').bind('click', function( event ) {
+                    if ($(".chosen")) {
+                    	game.activateGame($(".chosen").attr("data-value"));
+                    	this.hide();
+                    }
+                    
+                }.bind(this));
+                
+                $('#characterDialogLayer .female').bind('click', function( event ) {
+                	$(".chosen").removeClass();
+                	$(this).addClass("chosen");
+                    console.log("Chose female.");
+                });
+                
+                $('#characterDialogLayer .male').bind('click', function( event ) {
+                	$(".chosen").removeClass();
+                	$(this).addClass("chosen");
+                    console.log("Chose male.");
+                });
+
+                // console.log("Show message...");
+                this.characterWindowShowing = true;
+            }
+    },
+        
+    "hide": function hide() {
+    	console.log("called hide");
+        if (this.characterWindowShowing){
+        	console.log("close");
+            $('#characterDialogLayer').fadeOut( 200 , function(){
+            	$('#characterDialogLayer .female').unbind('click');
+            	$('#characterDialogLayer .male').unbind('click');
+                $('#characterDialogLayer .next').unbind('click');
+
+                $("#characterDialogLayer").children().remove();
+            });
+            
+            //Get player entity and make the isShowHelp = false
+            
+            // If in play screen on menu do nothing
+            // console.log("me.state.current():", me.state.isCurrent(me.state.PLAY));
+            if(me.state.isCurrent(me.state.MENU)){
+            	
+                //var player = me.game.getEntityByName('mainPlayer')[0];
+                //player.govermentDialogDone();
+            	me.state.change(me.state.PLAY);
+            }
+            
+            // console.log("hide message...");
+            this.characterWindowShowing = false;
+
+            // If game is on pause and the help window is closed then resume game
+            if (!me.state.isRunning()) {
+                me.state.resume();
+            }
+            
+        }
+    }
+});
+
 game.DialogWindow =  Object.extend({
     "init" : function init() {
         this.dialogwindowShowing = false;

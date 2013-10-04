@@ -1,8 +1,11 @@
 /* game namespace */
 var game = {
 	dialogWindow: null,
+	character: "male",
 	// Run on page load.
 	"onload" : function() {
+		me.state.set(me.state.LOADING, new game.LoadingScreen());
+		me.state.change(me.state.LOADING);
 		// Initialize the video.
 		if (!me.video.init("screen", 1024, 768, true, 'auto')) {
 			alert("Your browser does not support HTML5 canvas.");
@@ -30,6 +33,8 @@ var game = {
 		game.pathFinder = new game.Pathfinder();
 		
 		this.registerEvents();
+		
+		
 	},
 	
 	registerEvents: function() {
@@ -66,12 +71,17 @@ var game = {
 
 	// Run on game resources loaded.
 	"loaded" : function() {
+		this.characterWindow = new game.CharacterWindow();
 		this.dialogWindow = new game.DialogWindow();
 		me.sys.gravity = 0; // globally set gravity
 		// set the "Play/Ingame" Screen Object
 		me.state.set(me.state.MENU, new game.TitleScreen());
-
+		
 		me.state.set(me.state.PLAY, new game.PlayScreen());
+		
+		
+
+		//me.state.set(me.state.PLAY, new game.PlayScreen());
 		
 		me.state.transition("fade", "#FFFFFF", 250);
 
@@ -91,6 +101,12 @@ var game = {
 
 		// start the game
 		me.state.change(me.state.MENU);
+	},
+	
+	activateGame: function(character) {
+		console.log("Character is",character)
+		this.character = character;
+		
 	}
 	
 	/* COMMANDS TO KNOW
