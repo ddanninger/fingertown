@@ -5,6 +5,11 @@ game.PlayerEntity = me.ObjectEntity.extend({
 	destX: 0,
 	destY: 0,
 	dialogActive: false,
+	myPath: [],
+    dest: null,
+    lastPos: {x: -1, y: -1},
+    pathAge: 0,
+    startPos: {x: 0, y: 0},
     /* -----
  
     constructor
@@ -18,6 +23,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
  
         // set the default horizontal & vertical speed (accel vector)
         this.setVelocity(3, 15);
+        this.setFriction(0.5, 0.5);
+        this.updateColRect(4,24,20,23);
+        this.gravity = 0;
  
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
@@ -39,11 +47,56 @@ game.PlayerEntity = me.ObjectEntity.extend({
 		this.renderable.addAnimation("up", [0,0]);
 		this.renderable.addAnimation("right", [1]);
 
-
+		this.mouseDown = me.event.subscribe("mousedown", function (event) {
+		    console.log(event.pointerId, event.gameX, event.gameY);
+		    self.mouseClick(event);
+    	});
     },
  
-    mouseClick: function() {
-   
+    moveTo: false,
+    eventData: null,
+    mouseClick: function(event) {
+    	this.eventData = event;
+    	var self = this;
+    	this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.round(this.eventData.gameX),Math.round(this.eventData.gameY));
+        this.dest = this.myPath.pop();
+        console.log(this.dest);
+        
+        var tile_size = 32;
+        
+        
+        var initStartX = Math.round( this.pos.x / tile_size);
+        var initStartY = Math.round( ( this.pos.y ) / tile_size);
+        
+        var initDestX = Math.round( event.gameX);
+        var initDestY = Math.round( event.gameY );
+        
+        var start = [initStartX, initStartY];
+        var end = [initDestX, initDestY];
+        console.log("data pathfinder",start,end);
+        var followPath = game.pathFinder.getPath(start, end);
+        console.log(followPath);
+    	/*console.log(this.myPath,this.dest)
+    	console.log("vel",this.vel);
+    	$.each(this.myPath,function(index,path) {
+    		self.moveTo = true;
+    		console.log("MOVE TO PATH",path.x);
+    		self.moveToPos = path;
+    		//this.vel.x = path.x;
+    		//this.update();
+    		//this.updateMovement();
+    		//moveObject(this);
+    		
+    		self.moveTo = false;
+    	})
+    	console.log("out of array");
+    	this.moveTo = false;*/
+    	
+    },
+    
+    chessboard: function() {
+        // return chessboard distance to target
+        return Math.max( Math.abs(this.collisionBox.left - this.eventData.gameX), Math.abs(this.collisionBox.top - this.eventData.gameY));
     },
     /* -----
  
@@ -51,12 +104,116 @@ game.PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
     update: function() {
- 
+    	var now = Date.now()
+    	/*if (this.moveTo) {
+    		console.log(this.moveToPos);
+    		console.log("move to is active",this.moveTo);
+    		this.vel.x -= this.moveToPos.x * me.timer.tick;
+    		//this.vel.x += this.accel.x * me.timer.tick;
+    		
+    		var res = this.updateMovement();
+
+    		// check for collision result with the environment
+    		if (res.x != 0)
+    		{
+    		  // x axis
+    		  if (res.x<0)
+    		     console.log("x axis : left side !");
+    		  else
+    		     console.log("x axis : right side !");
+    		}
+    		else if(res.y != 0)
+    		{
+    		   // y axis
+    		   if (res.y<0)
+    		      console.log("y axis : top side !");
+    		   else
+    		      console.log("y axis : bottom side !");
+
+    		   // display the tile type
+    		   console.log(res.yprop.type)
+    		}
+    		//this.parent();
+    		return true;
+    	}*/
+    	
+    	this.updateColRect(0, 16, 16, 16);
+    	
+    	
+    	if (this.eventData != null) {
+    		var cbdist = this.chessboard();
+	        if (this.myPath.length < 1 || (cbdist >= 96 && this.pathAge+5000 < now)) {
+	            // not moving anywhere
+	            // friction takes over
+	            this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.round(this.eventData.gameX),Math.round(this.eventData.gameY));
+	            this.dest = this.myPath.pop();
+	            this.pathAge = now;
+	        } else {
+	        	if (this.chessboard() < 96) {
+	                // just go for it
+	                this.dest = this.target;
+	                this.pathAge = now-5000;
+	            } else if (this.collisionBox.overlaps(this.dest.rect) && this.myPath.length > 0) {
+	                // TODO - do this with non constant, add some fuzz factor
+	                //console.log("Reached "+this.dest.pos.x+","+this.dest.pos.y);
+	                this.dest = this.myPath.pop();
+
+	            }
+	            if (this.dest != null) {
+	                
+	                //console.log("@",this.collisionBox.pos.x,this.collisionBox.pos.y);
+	                //console.log("Moving toward ",this.dest.pos.x,this.dest.pos.y);
+	                // move based on next position
+	
+	  
+	                var xdiff = this.dest.pos.x - this.collisionBox.left
+	                  , ydiff = this.dest.pos.y - this.collisionBox.top;
+	
+	
+	                if (xdiff < -2) {
+	                    this.vel.x -= this.accel.x * me.timer.tick;
+	                    //this.lastPos.x = this.left;
+	                } else if (xdiff > 2) {
+	                    this.flipX(true);
+	                    this.vel.x += this.accel.x * me.timer.tick;
+	                    //this.lastPos.x = this.left;
+	                }
+	
+	                if (ydiff < -2) {
+	                    this.vel.y -= this.accel.y * me.timer.tick;
+	                    //this.lastPos.y = this.collisionBox.pos.y;
+	                } else if (ydiff > 2) {
+	                    this.vel.y += this.accel.y * me.timer.tick;
+	                    //this.lastPos.y = this.collisionBox.pos.y;
+	                }
+	            }
+	        }
+    	}
+    	
+    	
+    	if (this.vel.x != 0)
+        {
+          // x axis
+          if (this.vel.x<0)
+        	  this.renderable.setCurrentAnimation('right');
+          else
+        	  this.renderable.setCurrentAnimation('left');
+        }
+        else if(this.vel.y != 0)
+        {
+           // y axis
+           if (this.vel.y<0)
+        	   this.renderable.setCurrentAnimation('up');
+           else
+        	   this.renderable.setCurrentAnimation('down');
+        }
+    	
     	if (me.input.isKeyPressed('left'))
 		{
 			this.animationspeed = me.sys.fps / (me.sys.fps / 3);
 
 			this.vel.x = -this.accel.x * me.timer.tick;
+			console.log(this.vel.x);
 			this.renderable.setCurrentAnimation('left');
 			this.direction = 'left';
 		}
@@ -118,7 +275,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
         
  
  
-        this.updateMovement();
+        var res = this.updateMovement();
+        
+        
         
         // update animation if necessary
         if (this.vel.x!=0 || this.vel.y!=0) {
@@ -146,6 +305,32 @@ game.PlayerEntity = me.ObjectEntity.extend({
     	
     	me.state.resume();
     	this.dialogActive = false;
+    },
+    
+    draw: function(context) {
+        // draw the sprite if defined
+            if (this.renderable) {
+                // translate the renderable position (relative to the entity)
+                // and keeps it in the entity defined bounds
+                // anyway to optimize this ?
+                var x = ~~(this.pos.x + (this.anchorPoint.x * (this.width - this.renderable.width)));
+                var y = ~~(this.pos.y + (this.anchorPoint.y * (this.height - this.renderable.height)));
+                context.translate(x, y);
+                this.renderable.draw(context);
+                context.translate(-x, -y);
+            }
+        // draw dest rect
+        debugAStar = true;
+        if (debugAStar && this.dest) {
+            if (this.dest && this.dest.rect) {
+                this.dest.rect.draw(context, "green");
+            }   
+            for (var i = 0, ii = this.myPath.length; i < ii; i+=1) {
+                if (this.myPath[i] && this.myPath[i].rect) {
+                    this.myPath[i].rect.draw(context, "red");
+                }
+            }
+        }
     }
  
 });

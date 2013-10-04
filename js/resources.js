@@ -10,7 +10,7 @@ game.resources = [
  // our level tileset
     {name: "tileset-shinygold-resized",  type:"image", src: "TitleSets/tileset-shinygold-resized.png"},
     {name: "mainPlayer",  type:"image", src: "TitleSets/man_character.png"},
-    {name: "govermentPlayer",  type:"image", src: "TitleSets/govermentPlayer.png"},
+    {name: "govermentPlayer",  type:"image", src: "TitleSets/goverment_character.png"},
     {name: "metatiles32x32",  type:"image", src: "TitleSets/metatiles32x32.png"},
     
     /* 
