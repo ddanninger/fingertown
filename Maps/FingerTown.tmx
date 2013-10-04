@@ -47,7 +47,7 @@
     <property name="spritewidth" value="32"/>
    </properties>
   </object>
-  <object name="treeentitiy" x="790" y="318" width="42" height="34">
+  <object name="treeentity" x="790" y="318" width="42" height="34">
    <properties>
     <property name="image" value="treeentity"/>
     <property name="spritewidth" value="16"/>
