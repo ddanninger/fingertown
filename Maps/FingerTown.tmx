@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="32" height="24" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileset-shinygold-resized" tilewidth="32" tileheight="32">
-  <image source="../../TitleSets/tileset-shinygold-resized.png" width="256" height="8600"/>
+  <image source="../TitleSets/tileset-shinygold-resized.png" width="256" height="8600"/>
  </tileset>
  <tileset firstgid="2145" name="metatiles32x32" tilewidth="32" tileheight="32">
   <image source="../TitleSets/metatiles32x32.png" width="160" height="32"/>
@@ -10,6 +10,9 @@
     <property name="type" value="solid"/>
    </properties>
   </tile>
+ </tileset>
+ <tileset firstgid="2150" name="treeentity" tilewidth="16" tileheight="16">
+  <image source="../TitleSets/treeentity.png" trans="fffcf2" width="16" height="16"/>
  </tileset>
  <layer name="Floor" width="32" height="24">
   <data encoding="base64">
@@ -42,6 +45,12 @@
    <properties>
     <property name="image" value="govermentPlayer"/>
     <property name="spritewidth" value="32"/>
+   </properties>
+  </object>
+  <object name="trees_spawn" x="790" y="318" width="42" height="34">
+   <properties>
+    <property name="image" value="treeentity"/>
+    <property name="spritewidth" value="16"/>
    </properties>
   </object>
  </objectgroup>
