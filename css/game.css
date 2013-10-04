@@ -1,5 +1,11 @@
+@font-face
+{
+	font-family: "NanumGothic";
+	src: url('../fonts/NanumGothic.ttf');
+}
+
 body {
-    background-color: #000;
+    background-color: #efefef;
     color: #fff;
 
     /* Allow mouse dragging. */
@@ -15,11 +21,69 @@ body {
 
     /* Allow canvas to hit the edges of the browser viewport. */
     margin: 0;
+	padding:0;
 }
 
+#wrap {
+	width:1264px;
+	margin:0 auto;
+	
+}
+
+#main {
+	float:left;
+	width:1024px;
+
+}
+
+#toolbox {
+	float:left;
+	width:240px;
+	color:#fff;
+	display:none;
+}
+
+#toolbox .header {
+	background:url(../images/toolbox_header.png) no-repeat;
+	height:70px;
+	width:100%;
+}
+
+#toolbox .body {
+	background:url(../images/toolbox_body.png) repeat-y;
+	width:100%;
+	color:#7e7e7e;
+	height:698px;
+	font-family: "NanumGothic";
+	font-size:20px;
+}
+
+#toolbox .body ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+#toolbox .body li {
+	margin:0;
+	padding:0;
+	list-style:none;
+	float:left;
+	margin-left:30px;
+	padding:10px 50px;
+	padding-top:40px;
+	border-bottom:1px solid #7e7e7e;
+	text-align:center;
+}
+
+#toolbox .body p {
+	
+}
 
 #screen canvas {
-    margin: auto;
+float:left;
+    margin: 0;
+	padding:0;
 
     /* Hide the gap for font descenders. */
     display: block;
@@ -31,8 +95,17 @@ body {
 	image-rendering: -webkit-optimize-contrast;
 	image-rendering: optimize-contrast;
 	-ms-interpolation-mode: nearest-neighbor;
-
+	max-width:1024px !important;
+	max-height:768px !important;
 	
+}
+
+#toolbox {
+	float:right;
+}
+
+#toolbox .header, #toolbox .body {
+	float:left;
 }
 
 .dialog {

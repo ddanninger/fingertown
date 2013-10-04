@@ -26,10 +26,10 @@ game.TitleScreen = me.ScreenObject.extend({
             // init stuff if not yet done
             this.title = me.loader.getImage("startup");
             // font to display the menu items
-            this.font = new me.BitmapFont("32x32_font", 32);
+            //this.font = new me.BitmapFont("32x32_font", 32);
  
             // set the scroller
-            this.scrollerfont = new me.BitmapFont("32x32_font", 32);
+            //this.scrollerfont = new me.BitmapFont("32x32_font", 32);
  
         }
  
@@ -44,7 +44,13 @@ game.TitleScreen = me.ScreenObject.extend({
         // enable the keyboard
         me.input.bindKey(me.input.KEY.ENTER, "enter", true);
  
-        game.characterWindow.show();
+        //game.characterWindow.show();
+        
+
+        me.game.add(new game.LoginButton(330,664), 2000);
+        me.game.add(new game.SignupButton(570,664), 2000);
+        
+        me.game.sort.defer();
     },
  
     // some callback for the tween objects
@@ -70,7 +76,7 @@ game.TitleScreen = me.ScreenObject.extend({
         context.drawImage(this.title, 0, 0);
  
         //this.font.draw(context, "PRESS ENTER TO PLAY", 20, 240);
-        this.scrollerfont.draw(context, this.scroller, this.scrollerpos, 440);
+        //this.scrollerfont.draw(context, this.scroller, this.scrollerpos, 440);
         
         
     },

@@ -4,8 +4,12 @@ game.resources = [
      * Graphics.
      */
     {name: "logo",  type:"image", src: "TitleSets/logo.png"},
-    {name: "startup",  type:"image", src: "TitleSets/startup.png"},
+    {name: "startup",  type:"image", src: "TitleSets/startscreen.png"},
     {name: "32x32_font",          type:"image",	src: "font/32x32_font.png"},
+    
+    {name: "loginBtn",  type:"image", src: "TitleSets/loginBtn.png"},
+    {name: "signupBtn",  type:"image", src: "TitleSets/signupBtn.png"},
+    
     
  // our level tileset
     {name: "tileset-shinygold-resized",  type:"image", src: "TitleSets/tileset-shinygold-resized.png"},

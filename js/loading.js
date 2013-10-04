@@ -36,7 +36,7 @@ game.LoadingScreen = me.ScreenObject.extend({
 
 	draw : function(context) {
 		console.log("draw loading")
-		me.video.clearSurface(context, "black");
+		me.video.clearSurface(context, "#efefef");
 		
 		
 		context.drawImage(this.logo,

@@ -71,6 +71,7 @@ var game = {
 
 	// Run on game resources loaded.
 	"loaded" : function() {
+		this.Toolbox = new game.Toolbox();
 		this.characterWindow = new game.CharacterWindow();
 		this.dialogWindow = new game.DialogWindow();
 		this.Goverment = new game.Goverment();

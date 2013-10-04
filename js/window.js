@@ -1,3 +1,16 @@
+game.Toolbox = Object.extend({
+	toggle: function() {
+		var effect = 'slide';
+		 
+	    // Set the options for the effect type chosen
+	    var options = { direction: 'left' };
+	 
+	    // Set the duration (default: 400 milliseconds)
+	    var duration = 500;
+	 
+	    $('#toolbox').toggle(effect, options, duration);
+	}
+});
 
 game.CharacterWindow =  Object.extend({
     "init" : function init() {
@@ -25,6 +38,7 @@ game.CharacterWindow =  Object.extend({
                     if ($(".chosen")) {
                     	game.activateGame($(".chosen").attr("data-value"));
                     	this.hide();
+                    	game.Toolbox.toggle();
                     }
                     
                 }.bind(this));

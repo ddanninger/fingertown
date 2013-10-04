@@ -6,16 +6,37 @@
         <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta charset="UTF-8">
     </head>
     <body>
-    	
-        <!-- Canvas placeholder -->
-		<div id="screen">
-			<!-- Dialog placeholder -->
-			<div id="characterDialogLayer" class="dialog"></div>
-    		<div id="dialogLayer" class="dialog"></div>
+    	<div id="wrap">
+			<div id="main">
+				<div id="screen">
+					<!-- Dialog placeholder -->
+					<div id="characterDialogLayer" class="dialog"></div>
+		    		<div id="dialogLayer" class="dialog"></div>
+		    		
+				</div>
+			</div>
+			<div id="toolbox">
+				<div class="header">
+				</div>
+				<div class="body">
+					<ul>
+						<li>
+							<img src="images/trash_can.png"><br>
+							<p>쓰레기통</p>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
+
+        <!-- Canvas placeholder -->
+		
+		
         <script src="js/lib/jquery.js"></script>
+        <script src="js/lib/jquery-ui-1.10.3.custom.js"></script>
         
 		<!-- melonJS Library -->
 		<script type="text/javascript" src="melonJS/build/melonJS-0.9.9-min.js"></script>
@@ -33,7 +54,7 @@
        
         <script type="text/javascript" src="js/resources.js"></script>
         
-        
+        <script type="text/javascript" src="js/gui.js"></script>
         <script type="text/javascript" src="js/pathfinder.js"></script>
         
 		
