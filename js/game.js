@@ -89,7 +89,7 @@ var game = {
 		// add our player entity in the entity pool
 		me.entityPool.add("govermentPlayer", game.GovermentEntity);
 		me.entityPool.add("mainPlayer", game.PlayerEntity);
-		me.entityPool.add("trees_spawn", game.TreeEntity);
+		me.entityPool.add("treeentity", game.TreeEntity);
 
 		// enable the keyboard
 		me.input.bindKey(me.input.KEY.UP, "up");

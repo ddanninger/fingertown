@@ -314,6 +314,8 @@ game.PlayerEntity = me.ObjectEntity.extend({
     govermentDialogDone: function() {
     	var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
     	govPlayer.returnHome();
+    	var treeItem = me.game.getEntityByName('treeentity')[0];
+    	treeItem.plantTree();
     	
     	me.state.resume();
     	this.dialogActive = false;
@@ -591,6 +593,9 @@ game.TreeEntity = me.CollectableEntity.extend({
         //this.collidable = false;
         // remove it
         //me.game.remove(this);
-    }
+    },
+		plantTree: function() {
+	 console.log("planttree");
+	}
  
 });
