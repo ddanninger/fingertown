@@ -22,9 +22,13 @@ game.PlayerEntity = me.ObjectEntity.extend({
         this.parent(x, y, settings);
  
         // set the default horizontal & vertical speed (accel vector)
-        this.setVelocity(3, 15);
-        this.setFriction(0.5, 0.5);
+        //this.setVelocity(3, 15);
+        //this.setFriction(0.5, 0.5);
         this.updateColRect(4,24,20,23);
+        
+        this.setVelocity(0.25, 0.25);
+        this.setMaxVelocity(3, 3);
+        this.setFriction(0.05, 0.05);
         this.gravity = 0;
  
         // set the display to follow our position on both axis
@@ -368,6 +372,13 @@ game.GovermentEntity = me.ObjectEntity.extend({
 
         this.updateColRect(0, 32, 32, 32);
         
+        
+        this.renderable.addAnimation("down", [2,2]);
+		this.renderable.addAnimation("left", [3,3]);
+		this.renderable.addAnimation("up", [0,0]);
+		this.renderable.addAnimation("right", [1]);
+		
+
 
     },
     
@@ -437,7 +448,8 @@ game.GovermentEntity = me.ObjectEntity.extend({
             }
 
         } else {
-        	if (this.chessboard() <= 2 && this.removeMe != true) {
+        	console.log(this.chessboard());
+        	if ((this.chessboard() / 16) <= 1 && this.removeMe != true) {
         		if (!this.target.dialogActive) {
         			this.target.govermentDialog();
         		}
@@ -485,8 +497,26 @@ game.GovermentEntity = me.ObjectEntity.extend({
             }
         }
         
+        if (this.vel.x != 0)
+        {
+          // x axis
+          if (this.vel.x<0)
+        	  this.renderable.setCurrentAnimation('right');
+          else
+        	  this.renderable.setCurrentAnimation('left');
+        }
+        else if(this.vel.y != 0)
+        {
+           // y axis
+           if (this.vel.y<0)
+        	   this.renderable.setCurrentAnimation('up');
+           else
+        	   this.renderable.setCurrentAnimation('down');
+        }
+        
         if (this.removeMe == true) {
         	console.log("remvoe me");
+        	this.dead = true;
         	me.game.remove(this);
         }
         // check & update player movement
