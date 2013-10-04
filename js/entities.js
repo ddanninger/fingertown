@@ -319,6 +319,7 @@ game.TreeEntity = me.CollectableEntity.extend({
     init: function(x, y, settings) {
         // call the parent constructor
         this.parent(x, y, settings);
+				console.log("jhin TreeEntity test");
     },
  
     // this function is called by the engine, when
@@ -330,6 +331,8 @@ game.TreeEntity = me.CollectableEntity.extend({
         //this.collidable = false;
         // remove it
         //me.game.remove(this);
+				console.log("jhin TreeEntity test22");
+				
     }
  
 });

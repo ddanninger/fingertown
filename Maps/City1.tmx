@@ -50,6 +50,11 @@
     <property name="spritewidth" value="16"/>
    </properties>
   </object>
-  <object x="92" y="51" width="29" height="25"/>
+  <object name="trees_spawn" x="277" y="259" width="29" height="25">
+   <properties>
+    <property name="image" value="treeentity"/>
+    <property name="spritewidth" value="16"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

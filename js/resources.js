@@ -12,6 +12,7 @@ game.resources = [
     {name: "mainPlayer",  type:"image", src: "TitleSets/mainPlayer.png"},
     {name: "govermentPlayer",  type:"image", src: "TitleSets/govermentPlayer.png"},
     {name: "metatiles16x16",  type:"image", src: "TitleSets/metatiles16x16.png"},
+    {name: "treeentity",  type:"image", src: "TitleSets/treeentity.png"},
     
     /* 
      * Maps. 
