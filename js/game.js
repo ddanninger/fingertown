@@ -90,7 +90,7 @@ var game = {
 		me.input.bindKey(me.input.KEY.SPACE, "space", true);
 
 		// start the game
-		me.state.change(me.state.PLAY);
+		me.state.change(me.state.MENU);
 	}
 	
 	/* COMMANDS TO KNOW
@@ -98,6 +98,7 @@ var game = {
 	 * 
 	 * me.state.pause(); - pause game
 	 * me.state.resume(); - resume game
+	 * me.game.viewport.shake (20 , 1500)
 	 * 
 	 */
 };

@@ -1,3 +1,4 @@
+
 game.DialogWindow =  Object.extend({
     "init" : function init() {
         this.dialogwindowShowing = false;
