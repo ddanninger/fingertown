@@ -4,7 +4,7 @@ var game = {
 	// Run on page load.
 	"onload" : function() {
 		// Initialize the video.
-		if (!me.video.init("screen", 640, 480, true, 'auto')) {
+		if (!me.video.init("screen", 1024, 768, true, 'auto')) {
 			alert("Your browser does not support HTML5 canvas.");
 			return;
 		}
@@ -58,7 +58,7 @@ var game = {
 		    
 		    moveObject(character)
 		    //path.getPath([217,2],[398,247])*/
-		    console.log(context);
+		    
 		});
 	},
 
@@ -67,8 +67,8 @@ var game = {
 		this.dialogWindow = new game.DialogWindow();
 		me.sys.gravity = 0; // globally set gravity
 		// set the "Play/Ingame" Screen Object
-		me.state.set(me.state.MENU, new game.TitleScreen());
-
+		//me.state.set(me.state.MENU, new game.TitleScreen());
+console.log("HI");
 		me.state.set(me.state.PLAY, new game.PlayScreen());
 		
 		me.state.transition("fade", "#FFFFFF", 250);
@@ -90,4 +90,12 @@ var game = {
 		// start the game
 		me.state.change(me.state.PLAY);
 	}
+	
+	/* COMMANDS TO KNOW
+	 * 
+	 * 
+	 * me.state.pause(); - pause game
+	 * me.state.resume(); - resume game
+	 * 
+	 */
 };

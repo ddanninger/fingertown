@@ -12,6 +12,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
     ------ */
  
     init: function(x, y, settings) {
+    	var self = this;
         // call the constructor
         this.parent(x, y, settings);
  
@@ -20,8 +21,30 @@ game.PlayerEntity = me.ObjectEntity.extend({
  
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        
+        this.direction = 'left';
+        
+        // Change Inventory and question layer position
+        this.layerPosition = "right";
+        
+        // Keep this last direction to change only when hero change is direction
+        this.lastDirection = this.direction;
+        
+        /*this.renderable.addAnimation("stand-down", [4]);
+		this.renderable.addAnimation("stand-left", [8]);
+		this.renderable.addAnimation("stand-up", [1]);
+		this.renderable.addAnimation("stand-right", [11]);*/
+		this.renderable.addAnimation("down", [2,2]);
+		this.renderable.addAnimation("left", [3,3]);
+		this.renderable.addAnimation("up", [0,0]);
+		this.renderable.addAnimation("right", [1]);
+
+
     },
  
+    mouseClick: function() {
+   
+    },
     /* -----
  
     update the player pos
@@ -29,47 +52,62 @@ game.PlayerEntity = me.ObjectEntity.extend({
     ------ */
     update: function() {
  
-        if (me.input.isKeyPressed('left')) {
-        	this.animationspeed = me.sys.fps / (me.sys.fps / 3);
-            // flip the sprite on horizontal axis
-            this.flipX(true);
-            // update the entity velocity
-            this.vel.x -= this.accel.x * me.timer.tick;
-        } else if (me.input.isKeyPressed('right')) {
-        	this.animationspeed = me.sys.fps / (me.sys.fps / 3);
-            // unflip the sprite
-            this.flipX(false);
-            // update the entity velocity
-            this.vel.x += this.accel.x * me.timer.tick;
-        }
-        
-        if (me.input.isKeyPressed('up'))
+    	if (me.input.isKeyPressed('left'))
+		{
+			this.animationspeed = me.sys.fps / (me.sys.fps / 3);
+
+			this.vel.x = -this.accel.x * me.timer.tick;
+			this.renderable.setCurrentAnimation('left');
+			this.direction = 'left';
+		}
+		else if (me.input.isKeyPressed('right'))
+		{
+			this.animationspeed = me.sys.fps / (me.sys.fps / 3);
+			this.vel.x = this.accel.x * me.timer.tick; 
+			this.renderable.setCurrentAnimation('right');
+			this.direction = 'right';
+		}
+
+		if (me.input.isKeyPressed('up'))
 		{
 			this.animationspeed = me.sys.fps / (me.sys.fps / 3);
 			this.vel.y = -this.accel.y * me.timer.tick; 
-			//this.renderable.setCurrentAnimation('up');
+			this.renderable.setCurrentAnimation('up');
 			this.direction = 'up';
 		}
 		else if (me.input.isKeyPressed('down'))
 		{
 			this.animationspeed = me.sys.fps / (me.sys.fps / 3);
 			this.vel.y = this.accel.y * me.timer.tick; 
-			//this.renderable.setCurrentAnimation('down');
+			this.renderable.setCurrentAnimation('down');
 			this.direction = 'down';
 		}
         
-        /*if (me.input.isKeyPressed('jump')) {
-            // make sure we are not already jumping or falling
-            if (!this.jumping && !this.falling) {
-                // set current vel to the maximum defined value
-                // gravity will then do the rest
-                this.vel.y = -this.maxVel.y * me.timer.tick;
-                // set the jumping flag
-                this.jumping = true;
-            }
- 
-        }*/
+		// If player Stop set stand animationa
+		if (this.vel.y === 0 && this.vel.x === 0)
+		{
+			//this.renderable.setCurrentAnimation('stand-' + this.direction);
+		}else{
+		}
         
+		
+		if ( this.direction !== this.lastDirection ) {
+           me.game.sort();
+           
+           // Keep this last direction to change only when hero change is direction
+           this.lastDirection = this.direction;
+       }
+		
+		// probably not needed
+		var res = me.game.collide(this , true);
+		var self =this;
+		
+		// Keep hero position before collide
+		if( res.length == 0 ){
+                // Save the last hero coordinates before collide with something
+                self.posBeforeCollideX = self.pos.x;
+                self.posBeforeCollideY = self.pos.y;
+        }
         
         if (me.input.isKeyPressed('space')) {
             console.log("space is pressed",me.game.getEntityByName('govermentPlayer')[0]);
@@ -79,9 +117,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
         }
         
  
-        // check & update player movement
-        this.updateMovement();
  
+        this.updateMovement();
+        
         // update animation if necessary
         if (this.vel.x!=0 || this.vel.y!=0) {
             // update object animation

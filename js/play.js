@@ -4,7 +4,7 @@ game.PlayScreen = me.ScreenObject.extend({
     onResetEvent: function() {
         // stuff to reset on state change
         // load a level
-        me.levelDirector.loadLevel("City1");
+        me.levelDirector.loadLevel("FingerTown");
     },
  
     /* ---
