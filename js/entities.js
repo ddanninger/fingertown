@@ -74,7 +74,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
         this.dest = this.myPath.pop();
         console.log(this.dest);
         
-        var tile_size = 32;
+        /*var tile_size = 32;
         
         
         var initStartX = Math.round( this.pos.x / tile_size);
@@ -87,7 +87,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
         var end = [initDestX, initDestY];
         console.log("data pathfinder",start,end);
         var followPath = game.pathFinder.getPath(start, end);
-        console.log(followPath);
+        console.log(followPath);*/
     	/*console.log(this.myPath,this.dest)
     	console.log("vel",this.vel);
     	$.each(this.myPath,function(index,path) {
@@ -283,6 +283,28 @@ game.PlayerEntity = me.ObjectEntity.extend({
             var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
             if (govPlayer != null && typeof govPlayer != 'undefined')
             	govPlayer.moveToUser();
+            else {
+   
+            	/*var base = {
+            	gid: null,
+            	height: 47,
+            	image: "govermentPlayer",
+            	isEllipse: false,
+            	isPolygon: false,
+            	isPolyline: false,
+            	name: "govermentPlayer",
+            	spritewidth: 32,
+            	width: 48,
+            	x: 975,
+            	y: 629,
+            	z: 5,
+            	};
+            	//var govPlayer = new game.GovermentEntity(0, 0, base);
+                //me.game.add(govPlayer, 5);
+                //me.game.sort();
+            	game.Goverment.create();
+                //govPlayer.moveToUser();*/
+            }
         }
         
  
@@ -362,7 +384,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
     context : null,
     removeMe: false,
     init: function(x, y, settings) {
-    	console.log(x,y);
+    	console.log("govplayer",settings);
     	this.startPos = {x: x, y: y};
     	this.settings = settings;
     	//this.parent(0,0, settings);
@@ -456,7 +478,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
             }
 
         } else {
-        	console.log(this.chessboard());
+        	//console.log(this.chessboard());
         	if ((this.chessboard() / 16) <= 1 && this.removeMe != true) {
         		if (!this.target.dialogActive) {
         			this.target.govermentDialog();
@@ -526,6 +548,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
         	console.log("remvoe me");
         	this.dead = true;
         	me.game.remove(this);
+        	game.Goverment.create();
         }
         // check & update player movement
         this.updateMovement();
@@ -544,6 +567,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
     },
 
     draw: function(context) {
+    	//console.log("call gov draw",context)
     	this.context = context;
     	if (!this.started)
     		return false;
@@ -573,6 +597,24 @@ game.GovermentEntity = me.ObjectEntity.extend({
     }
 });
 
+game.Goverment = Object.extend({
+
+    create : function create() {
+        var settings = {};
+        settings.image = "govermentPlayer"
+        settings.spritewidth = 32;
+        settings.spriteheight = 32;
+        settings.name = "govermentPlayer";
+        settings.width = 48;
+        // console.log("npcData.coordenadas[0].initStartX:", npcData.coordenadas[0].initStartX);
+
+        // Create a new npc *ads_tile_size to transform map coordinates to tile coordinates
+        character = new game.GovermentEntity(31 * 32, 20 * 32, settings);
+
+        me.game.add(character, 7);
+        me.game.sort();
+    }
+});
 
 game.TreeEntity = me.CollectableEntity.extend({
     // extending the init function is not mandatory

@@ -73,6 +73,7 @@ var game = {
 	"loaded" : function() {
 		this.characterWindow = new game.CharacterWindow();
 		this.dialogWindow = new game.DialogWindow();
+		this.Goverment = new game.Goverment();
 		me.sys.gravity = 0; // globally set gravity
 		// set the "Play/Ingame" Screen Object
 		me.state.set(me.state.MENU, new game.TitleScreen());
