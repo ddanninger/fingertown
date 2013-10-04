@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Our Hometown</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="css/game.css">
+        <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    </head>
+    <body>
+    	
+        <!-- Canvas placeholder -->
+		<div id="screen" width="500">
+			<!-- Dialog placeholder -->
+    		<div id="dialogLayer"></div>
+		</div>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        
+		<!-- melonJS Library -->
+		<script type="text/javascript" src="melonJS/build/melonJS-0.9.9-min.js"></script>
+        
+		<!-- Plugin(s) -->
+		<script type="text/javascript" src="melonJS/plugins/debugPanel.js"></script>
+		<script type="text/javascript" src="melonJS/plugins/astar.js"></script>
+		
+		<script type="text/javascript" src="js/lib/astar.js"></script>
+		<script type="text/javascript" src="js/lib/pathfinding-browser.js"></script>
+		<!-- Game Scripts -->
+		
+		<script type="text/javascript" src="js/movement.js"></script>
+        <script type="text/javascript" src="js/game.js"></script>
+       
+        <script type="text/javascript" src="js/resources.js"></script>
+        
+        
+        <script type="text/javascript" src="js/pathfinder.js"></script>
+        
+		
+		<script type="text/javascript" src="js/entities.js"></script>
+
+        <script type="text/javascript" src="js/title.js"></script>
+         <script type="text/javascript" src="js/window.js"></script>
+        <script type="text/javascript" src="js/play.js"></script> 
+		
+		<!-- Bootstrap & Mobile optimization tricks -->
+		<script type="text/javascript">
+			window.onReady(function onReady() {
+				game.onload();
+
+				// Mobile browser hacks
+				if (me.sys.isMobile && !navigator.isCocoonJS) {
+					// Prevent the webview from moving on a swipe
+					window.document.addEventListener("touchmove", function (e) {
+						e.preventDefault();
+						window.scroll(0, 0);
+						return false;
+					}, false);
+
+					// Scroll away mobile GUI
+					(function () {
+						window.scrollTo(0, 1);
+						me.video.onresize(null);
+					}).defer();
+
+					me.event.subscribe(me.event.WINDOW_ONRESIZE, function (e) {
+						window.scrollTo(0, 1);
+					})
+
+					// Retina viewport settings
+					if (window.devicePixelRatio > 1) {
+						document.getElementById("viewport").setAttribute(
+							"content",
+							"width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0"
+						);
+					}
+				}
+			});
+		</script>
+    </body>
+</html>
