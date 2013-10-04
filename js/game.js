@@ -69,8 +69,8 @@ var game = {
 		this.dialogWindow = new game.DialogWindow();
 		me.sys.gravity = 0; // globally set gravity
 		// set the "Play/Ingame" Screen Object
-		//me.state.set(me.state.MENU, new game.TitleScreen());
-console.log("HI");
+		me.state.set(me.state.MENU, new game.TitleScreen());
+
 		me.state.set(me.state.PLAY, new game.PlayScreen());
 		
 		me.state.transition("fade", "#FFFFFF", 250);
@@ -79,7 +79,7 @@ console.log("HI");
 		// add our player entity in the entity pool
 		me.entityPool.add("govermentPlayer", game.GovermentEntity);
 		me.entityPool.add("mainPlayer", game.PlayerEntity);
-		
+		me.entityPool.add("trees_spawn", game.TreeEntity);
 
 		// enable the keyboard
 		me.input.bindKey(me.input.KEY.UP, "up");
