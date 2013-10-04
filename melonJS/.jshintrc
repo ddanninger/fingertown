@@ -1,0 +1,22 @@
+{
+    "curly": false,
+    "eqeqeq": true,
+    "immed": true,
+    "latedef": true,
+    "newcap": false,
+    "noarg": true,
+    "sub": true,
+    "undef": true,
+    "boss": true,
+    "eqnull": true,
+    "browser": true,
+    "strict": false,
+    "smarttabs": true,
+    "globals": {
+        "me": true,
+        "console": true,
+        "throttle": true,
+        "Windows": true,
+        "alert": true
+    }
+}
