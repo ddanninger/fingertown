@@ -18,10 +18,14 @@ game.resources = [
     {name: "male",  type:"image", src: "tilesets/man_character.png"},
     {name: "govermentPlayer",  type:"image", src: "tilesets/goverment_character.png"},
     {name: "metatiles32x32",  type:"image", src: "tilesets/metatiles32x32.png"},
+    
+    
     {name: "treeentity",  type:"image", src: "tilesets/tree.png"},
     {name: "treetransparent",  type:"image", src: "tilesets/tree_transparent.png"},
     
-    
+    {name: "trashentity",  type:"image", src: "tilesets/trash_can.png"},
+    {name: "roadlentity",  type:"image", src: "tilesets/road_light32.png"},
+    {name: "trafficlentity",  type:"image", src: "tilesets/traffic32.png"},
     
     /* 
      * Maps. 

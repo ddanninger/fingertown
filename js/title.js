@@ -18,6 +18,7 @@ game.TitleScreen = me.ScreenObject.extend({
  
         this.scroller = "OUR HOMETOWN - WE ROCK SICAMP SEOUL!";
         this.scrollerpos = 640;
+
     },
  
     // reset function

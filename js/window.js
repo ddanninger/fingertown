@@ -9,6 +9,21 @@ game.Toolbox = Object.extend({
 	    var duration = 500;
 	 
 	    $('#toolbox').toggle(effect, options, duration);
+	},
+	init: function() {
+		console.log("toolbox init");
+		var self = this;
+		$('#toolbox li').bind("click",function() {
+			$("#toolbox .selected").removeClass("selected");
+			$(this).addClass("selected");
+			self.changedItem();
+		});
+	},
+	changedItem: function() {
+		var selected = $("#toolbox .selected"),
+			key = selected.attr("data-key");
+
+		game.ToolBoxHelper.setSelected(key);
 	}
 });
 
@@ -50,13 +65,13 @@ game.CharacterWindow =  Object.extend({
                 }.bind(this));
                 
                 $('#characterDialogLayer .female').bind('click', function( event ) {
-                	$(".chosen").removeClass();
+                	$("#characterDialogLayer .chosen").removeClass("chosen");
                 	$(this).addClass("chosen");
                     console.log("Chose female.");
                 });
                 
                 $('#characterDialogLayer .male').bind('click', function( event ) {
-                	$(".chosen").removeClass();
+                	$("#characterDialogLayer .chosen").removeClass("chosen");
                 	$(this).addClass("chosen");
                     console.log("Chose male.");
                 });

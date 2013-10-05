@@ -10,6 +10,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
     lastPos: {x: -1, y: -1},
     pathAge: 0,
     startPos: {x: 0, y: 0},
+    firstStep: true,
+    reachedDest: true,
+    blockInput: false,
     /* -----
  
     constructor
@@ -68,12 +71,15 @@ game.PlayerEntity = me.ObjectEntity.extend({
     moveTo: false,
     eventData: null,
     mouseClick: function(event) {
+    	if (this.blockInput)
+    		return false;
     	this.eventData = event;
     	var self = this;
+    	this.firstStep = true;
+    	this.reachedDest = false;
     	this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.round(this.eventData.gameX),Math.round(this.eventData.gameY));
         this.dest = this.myPath.pop();
-        console.log(this.dest);
-        
+
         /*var tile_size = 32;
         
         
@@ -106,6 +112,14 @@ game.PlayerEntity = me.ObjectEntity.extend({
     	
     },
     
+    arrivedAtDest: function(event) {
+    	this.blockInput = true;
+    	game.ToolBoxHelper.addChosen(this.eventData.gameX, this.eventData.gameY);
+    	var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
+        if (govPlayer != null && typeof govPlayer != 'undefined')
+        	govPlayer.moveToUser();
+    },
+    
     chessboard: function() {
         // return chessboard distance to target
         return Math.max( Math.abs(this.collisionBox.left - this.eventData.gameX), Math.abs(this.collisionBox.top - this.eventData.gameY));
@@ -116,7 +130,10 @@ game.PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
     update: function() {
-    	var now = Date.now()
+    	var now = Date.now();
+    	
+    	if (this.blockInput)
+    		return false;
     	/*if (this.moveTo) {
     		console.log(this.moveToPos);
     		console.log("move to is active",this.moveTo);
@@ -153,6 +170,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
     	
     	
     	if (this.eventData != null) {
+    		
     		var cbdist = this.chessboard();
 	        if (this.myPath.length < 1 || (cbdist >= 96 && this.pathAge+5000 < now)) {
 	            // not moving anywhere
@@ -255,6 +273,10 @@ game.PlayerEntity = me.ObjectEntity.extend({
 		// If player Stop set stand animationa
 		if (this.vel.y === 0 && this.vel.x === 0)
 		{
+			if (this.eventData != null && !this.firstStep && !this.reachedDest) {
+				this.reachedDest = true;
+				this.arrivedAtDest(this.eventData);
+			}
 			//this.renderable.setCurrentAnimation('stand-' + this.direction);
 		}else{
 		}
@@ -311,7 +333,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
  
         var res = this.updateMovement();
         
-        
+        if (this.eventData != null && this.firstStep) {
+        	this.firstStep = false;
+        }
         
         // update animation if necessary
         if (this.vel.x!=0 || this.vel.y!=0) {
@@ -341,6 +365,8 @@ game.PlayerEntity = me.ObjectEntity.extend({
     	
     	me.state.resume();
     	this.dialogActive = false;
+    	
+    	this.blockInput = false;
     },
     
     draw: function(context) {
@@ -385,6 +411,8 @@ game.GovermentEntity = me.ObjectEntity.extend({
     settings: null,
     context : null,
     removeMe: false,
+    firstStep: false,
+    reachedDest: true,
     init: function(x, y, settings) {
     	
     	this.startPos = {x: x, y: y};
@@ -416,8 +444,9 @@ game.GovermentEntity = me.ObjectEntity.extend({
     
     moveToUser: function() {
     	if (!this.started) {
-    		
-    		
+
+        	this.firstStep = true;
+        	this.reachedDest = false;
     		
     		this.started = true;
     		this.draw(this.context);
@@ -445,6 +474,14 @@ game.GovermentEntity = me.ObjectEntity.extend({
     chessboard: function() {
         // return chessboard distance to target
         return Math.max( Math.abs(this.collisionBox.left - this.target.collisionBox.left), Math.abs(this.collisionBox.top - this.target.collisionBox.top));
+    },
+    
+    arrivedAtDest: function() {
+    	if (!this.target.dialogActive) {
+			this.target.govermentDialog();
+			
+			this.firstStep = true;
+		}
     },
 
     /* -----
@@ -481,13 +518,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
 
         } else {
         	//console.log(this.chessboard());
-        	if ((this.chessboard() / 16) <= 1 && this.removeMe != true) {
-        		if (!this.target.dialogActive) {
-        			this.target.govermentDialog();
-        		}
-            	return false;
-            }
-        	else if (this.chessboard() < 96) {
+        	if (this.chessboard() < 96) {
                 // just go for it
                 this.dest = this.target;
                 this.pathAge = now-5000;
@@ -529,6 +560,17 @@ game.GovermentEntity = me.ObjectEntity.extend({
             }
         }
         
+        
+        if (this.vel.y === 0 && this.vel.x === 0)
+		{
+        	console.log("arrived",this.firstStep,this.reachedDest);
+			if (!this.firstStep && !this.reachedDest) {
+				this.reachedDest = true;
+				this.arrivedAtDest();
+			}
+			//this.renderable.setCurrentAnimation('stand-' + this.direction);
+		}
+        
         if (this.vel.x != 0)
         {
           // x axis
@@ -552,6 +594,11 @@ game.GovermentEntity = me.ObjectEntity.extend({
         	me.game.remove(this);
         	game.Goverment.create();
         }
+        
+        if (this.firstStep) {
+        	this.firstStep = false;
+        }
+        
         // check & update player movement
         this.updateMovement();
 
@@ -637,8 +684,14 @@ game.TreeEntity = me.CollectableEntity.extend({
         // remove it
         //me.game.remove(this);
     },
-		plantTree: function() {
+	
+    plantTree: function() {
 	 console.log("planttree");
-	}
- 
+	},
+	
+	
 });
+
+
+
+
