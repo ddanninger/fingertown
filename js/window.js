@@ -27,6 +27,37 @@ game.Toolbox = Object.extend({
 	}
 });
 
+game.ProfileInfo = Object.extend({
+	toggle: function(func) {
+		var effect = 'slide';
+		 
+	    // Set the options for the effect type chosen
+	    var options = { direction: 'left' };
+	 
+	    // Set the duration (default: 400 milliseconds)
+	    var duration = 500;
+	    if (typeof func != "undefined")
+	    	$('#profileinfo').toggle(effect, options, duration, func);
+	    else
+	    	$('#profileinfo').toggle(effect, options, duration);
+	    
+	    
+	},
+	init: function() {
+		
+		console.log("toolbox init");
+		var self = this;
+		$('#profileinfo .close').bind("click",function() {
+			self.toggle(function() {
+				game.PlayScreen.showProfile = false;
+				var mainPlayer = me.game.getEntityByName('mainPlayer')[0];
+        	    mainPlayer.blockInput = false;
+				game.Toolbox.toggle();
+			});
+		});
+	}
+});
+
 game.CharacterWindow =  Object.extend({
     "init" : function init() {
         this.characterWindowShowing = false;
@@ -54,7 +85,11 @@ game.CharacterWindow =  Object.extend({
                     if ($(".chosen")) {
                     	game.activateGame($(".chosen").attr("data-value"));
                     	this.hide();
-                    	game.Toolbox.toggle();
+                    	game.ProfileInfo.toggle(function() {
+                    		console.log("Block");
+                    		var mainPlayer = me.game.getEntityByName('mainPlayer')[0];
+                    	    mainPlayer.blockInput = true;
+                    	});
                     }
                     
                 }.bind(this));
@@ -122,6 +157,7 @@ game.CharacterWindow =  Object.extend({
 });
 
 game.DialogWindow =  Object.extend({
+	pos: null,
     "init" : function init() {
         this.dialogwindowShowing = false;
 
@@ -132,16 +168,29 @@ game.DialogWindow =  Object.extend({
         return this.dialogwindowShowing;
     },
     
-    "show": function show() {
+    "show": function show(pos) {
+    	console.log("DIALOG POS",pos)
             if (!this.dialogwindowShowing){                
                  // all help screen
-                 var $htmlInner = ('<div id="helpScreen"><p>Goverment Office is talking now and asking about place,location and so on. <a href="javascript:;" class="close">Close Window</a></p></div>');
+                 //var $htmlInner = ('<div id="helpScreen"><p>Goverment Office is talking now and asking about place,location and so on. <a href="javascript:;" class="close">Close Window</a></p></div>');
                     
-                $('#dialogLayer').append($htmlInner);
+                //$('#dialogLayer').append($htmlInner);
                 
-                $('#dialogLayer').fadeIn(500);
+                //$('#dialogLayer').fadeIn(500);
+            	
+            	$('#dialogLayer').reveal({
+                    animation: 'fadeAndPop',                   //fade, fadeAndPop, none
+                    animationspeed: 200,                       //how fast animtions are
+                    closeonbackgroundclick: false,              //if you click background will modal close?
+                    dismissmodalclass: 'close-reveal-modal'    //the class of a button or element that will close an open modal
+               });
+            	
+            	$('#dialogLayer .close-reveal-modal').bind('click', function( event ) {
+                	this.unbind();
+                    
+                }.bind(this));
                 
-                $('#dialogLayer .close').bind('click', function( event ) {
+                $('#dialogLayer .ok').bind('click', function( event ) {
                     console.log("Close event...");
                     this.hide();
                 }.bind(this));
@@ -150,15 +199,20 @@ game.DialogWindow =  Object.extend({
                 this.dialogwindowShowing = true;
             }
     },
+    
+    "unbind": function() {
+    	
+    },
         
     "hide": function hide() {
         if (this.dialogwindowShowing){
-            $('#dialogLayer').fadeOut( 200 , function(){
+        	$('#dialogLayer').trigger("reveal:close");
+            /*$('#dialogLayer').fadeOut( 200 , function(){
                 $('#dialogLayer .close').unbind('click');
                 //lears all the child divs, but leaves the master intact.
                 $("#dialogLayer").children().remove();
             });
-            
+            */
             //Get player entity and make the isShowHelp = false
             
             // If in play screen on menu do nothing

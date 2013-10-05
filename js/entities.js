@@ -351,9 +351,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
     },
     
     govermentDialog: function() {
-    	console.log(game.dialogWindow);
+    	console.log(this.eventData);
     	this.dialogActive = true;
-    	game.dialogWindow.show();
+    	game.dialogWindow.show({x: this.eventData.gameX, y: this.eventData.gameY});
         me.state.pause();
     },
     

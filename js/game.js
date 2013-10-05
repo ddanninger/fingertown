@@ -71,15 +71,17 @@ var game = {
 
 	// Run on game resources loaded.
 	"loaded" : function() {
+		this.ProfileInfo = new game.ProfileInfo();
 		this.Toolbox = new game.Toolbox();
 		this.characterWindow = new game.CharacterWindow();
 		this.dialogWindow = new game.DialogWindow();
 		this.Goverment = new game.Goverment();
+		this.PlayScreen = new game.PlayScreen();
 		me.sys.gravity = 0; // globally set gravity
 		// set the "Play/Ingame" Screen Object
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		
-		me.state.set(me.state.PLAY, new game.PlayScreen());
+		me.state.set(me.state.PLAY, this.PlayScreen);
 		
 		
 

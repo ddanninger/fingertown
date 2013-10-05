@@ -20,7 +20,7 @@
 				<div id="screen">
 					<!-- Dialog placeholder -->
 					<div id="characterDialogLayer" class="reveal-modal">
-						<h1>Reveal Modal Goodness</h1>
+						<h1>Character Select</h1>
 						<div id="characterScreen" align="center">
 							<ul>
 								
@@ -40,7 +40,16 @@
 							<button class="next">OK</button>
 						</div>
 					</div>
-		    		<div id="dialogLayer" class="dialog"></div>
+		    		<div id="dialogLayer" class="reveal-modal">
+						<h1>Registration</h1>
+						<div class="itemPlace">
+							
+						</div>
+						<a class="close-reveal-modal">&#215;</a>
+						<div align="center">
+							<button class="ok">OK</button>
+						</div>
+					</div>
 		    		
 				</div>
 			</div>
@@ -49,7 +58,7 @@
 				</div>
 				<div class="body">
 					<ul>
-						<li data-key="tree">
+						<li data-key="tree" class="selected">
 							<div>
 							<img src="tilesets/tree.png">
 							<p>나무</p>
@@ -69,6 +78,9 @@
 						</li>
 					</ul>
 				</div>
+			</div>
+			<div id="profileinfo">
+				<a class="close">&#215;</a>
 			</div>
 		</div>
 

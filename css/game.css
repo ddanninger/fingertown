@@ -36,11 +36,28 @@ body {
 
 }
 
-#toolbox {
+#toolbox, #profileinfo {
 	float:left;
 	width:240px;
 	color:#fff;
 	display:none;
+}
+
+#profileinfo {
+	
+	background:#e5e5e5 url(../images/profile_right.png) no-repeat;
+	height:768px;
+}
+
+#profileinfo .close {
+	font-size: 50px;
+	line-height: .5;
+	float:right;
+	padding:10px;
+	color:#f47920;
+	text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+	font-weight: normal;
+	cursor: pointer;
 }
 
 #toolbox .header {
@@ -144,8 +161,12 @@ float:left;
  }
 
 #dialogLayer {
-    width: 444px;
-    height: 544px;
+    width: 732px;
+    
+}
+
+#dialogLayer .itemPlace {
+	background:#efefef url(../images/item_place_background.png) no-repeat;
 }
 
  #characterDialogLayer ul {
