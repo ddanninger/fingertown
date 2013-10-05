@@ -28,7 +28,8 @@ game.resources = [
     {name: "trafficlentity",  type:"image", src: "tilesets/traffic32.png"},
     
     
-    {name: "profile_left",  type:"image", src: "images/profile_left.png"},
+    {name: "profile_male",  type:"image", src: "images/profile_left.png"},
+    {name: "profile_female",  type:"image", src: "images/profile_left.png"},
     /* 
      * Maps. 
      */

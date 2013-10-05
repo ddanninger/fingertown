@@ -201,3 +201,10 @@ float:left;
 	background-color:#e8e7e7;
 	display:block;
 }
+
+@media (max-width: 767px) {
+	.male, .female {
+		width:50px !important;
+  	}
+  	
+}

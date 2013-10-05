@@ -77,6 +77,9 @@
 		border-bottom:1px solid #00554a;
 		border-right:1px solid #009f8b;
 		cursor:pointer;
+		padding:5px;
+		padding-left:10px;
+		padding-right:10px;
 	}
 	/*
 		
@@ -94,3 +97,28 @@
 	</div>
 	
 	*/
+	
+@media (max-width: 767px) {
+	.reveal-modal {
+		margin-left:0;
+		left:0;
+		top:0;
+		width:100%;
+	}
+	
+	.reveal-modal .close-reveal-modal {
+		font-size:30px;
+		padding-right:20px;
+	}
+	
+	.reveal-modal h1 {
+		font-size:14px !important;
+  	}
+  	
+  	.reveal-modal button {
+		font-size:18px !important;
+  	}
+  	
+}
+	
+

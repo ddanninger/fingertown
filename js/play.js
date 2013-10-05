@@ -8,7 +8,10 @@ game.PlayScreen = me.ScreenObject.extend({
 	showProfile: true,
 	
     onResetEvent: function() {
-    	this.title = me.loader.getImage("profile_left");
+    	var imgName = "profile_male";
+    	if (game.character == "female")
+    		imgName = "profile_female";
+    	this.title = me.loader.getImage(imgName);
         // stuff to reset on state change
         // load a level
         me.levelDirector.loadLevel("FingerTown");
@@ -17,6 +20,7 @@ game.PlayScreen = me.ScreenObject.extend({
     draw: function(context) {
     	if (this.showProfile) {
     		//
+    		
     		context.drawImage(this.title, 0, 0);
     	}
     	//console.log("draw playscreen")
