@@ -6,16 +6,12 @@ class Test extends CI_Controller {
 		$this->load->model('user_model');
 	}
     function index() {
-		echo "hello<br />";
-		echo md5("hello")."<br />";
-		echo '
-			<a href="test1" />test1</a><br />
-			<a href="test2" />test2</a><br />
-			<a href="test3" />test3</a><br />
-			<a href="test4" />test4</a><br />
-			';
-		phpinfo();
+		$this->load->view('test/main');
     }
+
+	function phpinfo() {
+		phpinfo();
+	}
 
 	function test1() {
 		$test = $this->user_model->test("junho85@gmail.com");

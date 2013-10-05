@@ -10,22 +10,18 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	//alert("test");
-	get_list();
+	//get_list();
 });
 
 function get_list() {
 	var item_id = "1";
 
-	var url = "http://oht.junho85.pe.kr/index.php/test/test4_list?item_id="+item_id+"&callback=?";
+	var url = "http://oht.junho85.pe.kr/server/test/test4_list?item_id="+item_id+"&callback=?";
 	console.log(url);
 
 	$.getJSON(url, function(data) {
 		//alert(data);
 		console.log(data);
-		/*
-		var sum = data.value1 + data.value2 + data.value3;
-		jQuery("#test").html(data.value1 + ":" + data.value2 + ":" + data.value3 + ":" + sum);
-		*/
 	}).done(function() {
 		console.log("done");
 	}).fail(function() {
