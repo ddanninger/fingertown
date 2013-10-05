@@ -5,9 +5,9 @@ game.DataLoader = {
 		var self = this;
 		$.ajax({
 			type : "GET",
-			url : "data/items.json",
-			//dataType: "jsonp",
-			//url : game.Endpoint + "server/item/get_list?callback=?",
+			//url : "data/items.json",
+			dataType: "jsonp",
+			url : game.Endpoint + "server/item/get_list?callback=?",
 			data : {
 				town_id : 1
 			},
@@ -39,5 +39,26 @@ game.DataLoader = {
 				break;
 		}
 		game.ToolBoxHelper.addItem(x,y, type, {text: item.detail});
+	},
+	saveItem: function(text,type,x,y) {
+
+		var self = this;
+		$.ajax({
+			type : "GET",
+			dataType: "jsonp",
+			url : game.Endpoint + "server/item/add?callback=?",
+			data : {
+				user_id: 1,
+				town_id : 1,
+				detail: text,
+				type: type,
+				coord_x: x,
+				coord_y: y
+			},
+			dataType: "json",
+			success: function(result) {
+				console.log("SAVED ",result)
+			}
+		});
 	}
 };

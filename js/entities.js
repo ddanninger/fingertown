@@ -130,7 +130,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
     
     arrivedAtDest: function(event) {
     	this.blockInput = true;
-    	game.ToolBoxHelper.addChosen(Math.floor(this.eventData.gameX), Math.floor(this.eventData.gameY) - 32);
+    	
     	var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
         if (govPlayer != null && typeof govPlayer != 'undefined')
         	govPlayer.moveToUser();
@@ -369,14 +369,19 @@ game.PlayerEntity = me.ObjectEntity.extend({
     govermentDialog: function() {
     	console.log(this.eventData);
     	this.dialogActive = true;
-    	game.dialogWindow.show({x: this.eventData.gameX, y: this.eventData.gameY});
+
+    	game.dialogWindow.show(game.ToolBoxHelper.selected, {x: this.eventData.gameX, y: this.eventData.gameY});
         me.state.pause();
     },
     
     govermentDialogDone: function() {
     	var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
     	govPlayer.returnHome();
-    	var treeItem = me.game.getEntityByName('treeentity')[0];
+    	//var treeItem = me.game.getEntityByName('treeentity')[0];
+    	
+    	var text = game.dialogWindow.getData();
+
+    	game.ToolBoxHelper.addChosen(Math.floor(this.eventData.gameX), Math.floor(this.eventData.gameY) - 32, text);
     	
     	me.state.resume();
     	this.dialogActive = false;

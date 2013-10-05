@@ -29,8 +29,8 @@ game.ToolBoxHelper = {
 		me.game.sort();*/
 		game.ToolBoxHelper.addItem(x,y,"treeentity");
 	},
-	addChosen: function(x,y) {
-		game.ToolBoxHelper.addItem(x,y,game.ToolBoxHelper.selected,{text: ""});
+	addChosen: function(x,y, text) {
+		return game.ToolBoxHelper.addItem(x,y,game.ToolBoxHelper.selected,{text: text});
 	},
 	addItem: function(x, y, name, data) {
 		var settings = {};
@@ -48,5 +48,6 @@ game.ToolBoxHelper = {
 		
 		me.game.add(item, 5);
 		me.game.sort();
+		return settings;
 	}
 };

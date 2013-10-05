@@ -163,6 +163,8 @@ game.CharacterWindow =  Object.extend({
 
 game.DialogWindow =  Object.extend({
 	pos: null,
+	data: {text: ""},
+	type: "treeentity",
     "init" : function init() {
         this.dialogwindowShowing = false;
 
@@ -173,8 +175,11 @@ game.DialogWindow =  Object.extend({
         return this.dialogwindowShowing;
     },
     
-    "show": function show(pos) {
-    	console.log("DIALOG POS",pos)
+    "show": function show(type,pos) {
+    	this.type = type;
+    	this.pos = pos;
+    	//this.setInfo();
+    	console.log("DIALOG POS",type,pos)
             if (!this.dialogwindowShowing){                
                  // all help screen
                  //var $htmlInner = ('<div id="helpScreen"><p>Goverment Office is talking now and asking about place,location and so on. <a href="javascript:;" class="close">Close Window</a></p></div>');
@@ -197,12 +202,55 @@ game.DialogWindow =  Object.extend({
                 
                 $('#dialogLayer .ok').bind('click', function( event ) {
                     console.log("Close event...");
+                    this.save();
                     this.hide();
                 }.bind(this));
 
                 // console.log("Show message...");
                 this.dialogwindowShowing = true;
             }
+    },
+    
+    "save": function() {
+    	var type = 1;
+    	if (this.type == game.ToolBoxHelper.items.TRASH) {
+			type = 2;
+		}
+		else if (this.type == game.ToolBoxHelper.items.ROADLIGHT) {
+			type = 3;
+		}
+		else if (this.type == game.ToolBoxHelper.items.TRAFFICLIGHT) {
+			type = 4;
+		}
+    	
+    	var text = $("#dialogLayer textarea[name=reason]").val();
+    	this.data.text = text;
+    	
+    	game.DataLoader.saveItem(text,type,Math.round(this.pos.x),Math.round(this.pos.y));
+    	var player = me.game.getEntityByName('mainPlayer')[0];
+        player.govermentDialogDone();
+    },
+    
+    "setInfo": function() {
+    	var img = "tree", text = "나무"; 
+		if (this.type == game.ToolBoxHelper.items.TRASH) {
+			img = "trash";
+			text = "쓰레기통";
+		}
+		else if (this.type == game.ToolBoxHelper.items.ROADLIGHT) {
+			img = "light";
+			text = "가로등";
+		}
+		else if (this.type == game.ToolBoxHelper.items.TRAFFICLIGHT) {
+			img = "traffic";
+			text = "신호등";
+		}
+
+    	$( "#dialogLayer .type" ).html('<div><img src="images/'+img+'_big.png"><p>'+text+'</p></div>');
+    },
+    
+    "getData": function() {
+    	return $("#dialogLayer textarea[name=reason]").val();
     },
     
     "unbind": function() {
@@ -223,8 +271,7 @@ game.DialogWindow =  Object.extend({
             // If in play screen on menu do nothing
             // console.log("me.state.current():", me.state.isCurrent(me.state.PLAY));
             if(me.state.isCurrent(me.state.PLAY)){
-                var player = me.game.getEntityByName('mainPlayer')[0];
-                player.govermentDialogDone();
+                
             }
             
             // console.log("hide message...");
@@ -285,7 +332,7 @@ game.InfoWindow =  Object.extend({
     },
     
     "setInfo": function() {
-    	var img = "tree", text = "나무"; 
+    	var img = "tree", text = "나무", realText = this.data.data.text; 
 		if (this.data.image == game.ToolBoxHelper.items.TRASH) {
 			img = "trash";
 			text = "쓰레기통";
@@ -298,8 +345,9 @@ game.InfoWindow =  Object.extend({
 			img = "traffic";
 			text = "신호등";
 		}
-
+console.log("set info",this.data);
     	$( "#infoLayer .type" ).html('<div><img src="images/'+img+'_big.png"><p>'+text+'</p></div>');
+    	$( "#infoLayer .reason .text" ).html(realText);
     },
         
     "hide": function hide() {

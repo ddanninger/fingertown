@@ -166,20 +166,20 @@ float:left;
     width: 732px;
 }
 
-#infoLayer .location, #infoLayer .reason, #infoLayer .comments {
+.infoLayer .location, .infoLayer .reason, .infoLayer .comments {
 	float:left;
 	width:100%;
 }
 
-#infoLayer .comments {
+.infoLayer .comments {
 	margin-top:10px;
 }
 
-#infoLayer .location .type {
+.infoLayer .location .type {
 	padding-top:20px;
 }
 
-#infoLayer ul {
+.infoLayer ul {
 	float:left;
 	list-style:none;
 	margin:0;
@@ -191,7 +191,7 @@ float:left;
 
 
 
-#infoLayer li {
+.infoLayer li {
 	float:left;
 	width:100%;
 	list-style:none;
@@ -200,37 +200,50 @@ float:left;
 	text-align:center;
 }
 
-#infoLayer .small {
+.infoLayer .small {
 	width:28%;
 }
 
-#infoLayer .normal {
+.infoLayer .normal {
 	width:36%;
 }
 
-#infoLayer .big {
+.infoLayer .big {
 	width:72%;
 }
 
-#infoLayer li p {
+.infoLayer li p {
 	margin:0;
 	padding:0;
 	padding-top:10px;
 	font-size:22px;
 }
 
+.infoLayer textarea {
+	background-color:#e8e7e7;
+	color:#7e7e7e;
+	border:none;
+	height:120px;
+	margin-left:55px;
+	height:120px;
+	width:410px;
+	font-size:18px;
+	font-family: "NanumGothic";
+}
+
 .align-left {
 	text-align:left;
 }
 
-#infoLayer .text {
+.infoLayer .text {
 	padding-top:2px;
 	font-size:18px;
 	text-align:left;
+	color:#7e7e7e;
 	line-height:30px;
 }
 
-#infoLayer .questionBtn {
+.infoLayer .questionBtn {
 	float:left;
 	height:34px;
 	width:142px;
@@ -244,14 +257,11 @@ float:left;
 	margin-left:40px;
 }
 
-#infoLayer .questionBtn span {
+.infoLayer .questionBtn span {
 	display:block;
 	padding-right:20px;
 }
 
-#dialogLayer .itemPlace {
-	background:#efefef url(../images/item_place_background.png) no-repeat;
-}
 
  #characterDialogLayer ul {
 	float:left;
