@@ -25,14 +25,15 @@ game.CharacterWindow =  Object.extend({
     
     "show": function show() {
     		var self = this;
+    		console.log("came here");
             if (!this.characterWindowShowing){           
             	
-                 // all help screen
-                 var $htmlInner = ('<div id="characterScreen"><ul><li><a href="javascript:;" class="female" data-value="female"><img src="images/female.png"></a></li><li><a href="javascript:;" class="male" data-value="male"><img src="images/male.png"></a></li></ul><br><a href="javascript:;" class="next">Next</a></div>');
-                    
-                $('#characterDialogLayer').append($htmlInner);
-                
-                $('#characterDialogLayer').fadeIn(500);
+                $('#characterDialogLayer').reveal({
+                    animation: 'fadeAndPop',                   //fade, fadeAndPop, none
+                    animationspeed: 200,                       //how fast animtions are
+                    closeonbackgroundclick: false,              //if you click background will modal close?
+                    dismissmodalclass: 'close-reveal-modal'    //the class of a button or element that will close an open modal
+               });
                 
                 $('#characterDialogLayer .next').bind('click', function( event ) {
                     if ($(".chosen")) {
@@ -40,6 +41,11 @@ game.CharacterWindow =  Object.extend({
                     	this.hide();
                     	game.Toolbox.toggle();
                     }
+                    
+                }.bind(this));
+                
+                $('#characterDialogLayer .close-reveal-modal').bind('click', function( event ) {
+                	this.unbind();
                     
                 }.bind(this));
                 
@@ -60,19 +66,24 @@ game.CharacterWindow =  Object.extend({
             }
     },
         
+    "unbind": function() {
+    	$('#characterDialogLayer .female').unbind('click');
+    	$('#characterDialogLayer .male').unbind('click');
+        $('#characterDialogLayer .next').unbind('click');
+        
+        this.characterWindowShowing = false;
+    },
+    
     "hide": function hide() {
     	console.log("called hide");
         if (this.characterWindowShowing){
         	console.log("close");
-            $('#characterDialogLayer').fadeOut( 200 , function(){
-            	$('#characterDialogLayer .female').unbind('click');
-            	$('#characterDialogLayer .male').unbind('click');
-                $('#characterDialogLayer .next').unbind('click');
 
-                $("#characterDialogLayer").children().remove();
-            });
+            $('#characterDialogLayer').trigger("reveal:close");
             
-            //Get player entity and make the isShowHelp = false
+            this.unbind();
+            
+
             
             // If in play screen on menu do nothing
             // console.log("me.state.current():", me.state.isCurrent(me.state.PLAY));
