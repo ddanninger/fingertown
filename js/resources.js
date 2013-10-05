@@ -18,7 +18,8 @@ game.resources = [
     {name: "male",  type:"image", src: "tilesets/man_character.png"},
     {name: "govermentPlayer",  type:"image", src: "tilesets/goverment_character.png"},
     {name: "metatiles32x32",  type:"image", src: "tilesets/metatiles32x32.png"},
-    {name: "treeentity",  type:"image", src: "tilesets/treeentity.png"},
+    {name: "treeentity",  type:"image", src: "tilesets/tree.png"},
+    {name: "treetransparent",  type:"image", src: "tilesets/tree_transparent.png"},
     
     
     
