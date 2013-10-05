@@ -32,7 +32,7 @@ class Comment extends CI_Controller {
 	// TODO 
 	function delete() {
 		// TODO user check
-		$item_id = $this->input->get('comment_id');
+		$comment_id = $this->input->get('comment_id');
 
 		$result = $this->comment_model->delete($comment_id);
 
