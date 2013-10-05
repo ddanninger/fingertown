@@ -16,7 +16,7 @@ $(document).ready(function() {
 function get_list() {
 	var item_id = "1";
 
-	var url = "http://oht.junho85.pe.kr/server/test/test4_list?item_id="+item_id+"&callback=?";
+	var url = "http://oht.junho85.pe.kr/server/item/item_list?item_id="+town_id+"&callback=?";
 	console.log(url);
 
 	$.getJSON(url, function(data) {

@@ -19,7 +19,7 @@ class Comment_model extends CI_Model {
     }
 
 	function delete($id) {
-		$this->db->set('id', $id);
+		$this->db->where('id', $id);
 
 		$this->db->delete('comment');
 
