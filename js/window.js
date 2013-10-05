@@ -157,6 +157,7 @@ game.CharacterWindow =  Object.extend({
 });
 
 game.DialogWindow =  Object.extend({
+	pos: null,
     "init" : function init() {
         this.dialogwindowShowing = false;
 
@@ -167,7 +168,8 @@ game.DialogWindow =  Object.extend({
         return this.dialogwindowShowing;
     },
     
-    "show": function show() {
+    "show": function show(pos) {
+    	console.log("DIALOG POS",pos)
             if (!this.dialogwindowShowing){                
                  // all help screen
                  //var $htmlInner = ('<div id="helpScreen"><p>Goverment Office is talking now and asking about place,location and so on. <a href="javascript:;" class="close">Close Window</a></p></div>');
