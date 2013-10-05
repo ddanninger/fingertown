@@ -13,6 +13,11 @@ game.resources = [
     
  // our level tileset
     {name: "tileset-shinygold-resized",  type:"image", src: "tilesets/tileset-shinygold-resized.png"},
+    {name: "tile-2",  type:"image", src: "tilesets/tile-2.png"},
+    {name: "tile-3",  type:"image", src: "tilesets/tile-3.png"},
+    {name: "Building",  type:"image", src: "tilesets/Building.png"},
+    {name: "BuildingK",  type:"image", src: "tilesets/BuildingK.png"},
+    {name: "Building-3",  type:"image", src: "tilesets/Building-3.png"},
     {name: "mainPlayer",  type:"image", src: "tilesets/man_character.png"},
     {name: "female",  type:"image", src: "tilesets/girl_character.png"},
     {name: "male",  type:"image", src: "tilesets/man_character.png"},
@@ -28,8 +33,8 @@ game.resources = [
     {name: "trafficlentity",  type:"image", src: "tilesets/traffic32.png"},
     
     
-    {name: "profile_male",  type:"image", src: "images/profile_left.png"},
-    {name: "profile_female",  type:"image", src: "images/profile_left.png"},
+    {name: "profile_male",  type:"image", src: "images/profile_left_male.png"},
+    {name: "profile_female",  type:"image", src: "images/profile_left_female.png"},
     /* 
      * Maps. 
      */

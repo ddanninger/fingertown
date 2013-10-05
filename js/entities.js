@@ -60,24 +60,40 @@ game.PlayerEntity = me.ObjectEntity.extend({
 		this.renderable.addAnimation("up", [0,0]);
 		this.renderable.addAnimation("right", [1]);
 
-		this.mouseDown = me.event.subscribe("mousedown", function (event) {
-		    console.log(event.pointerId, event.gameX, event.gameY);
+		me.event.subscribe("entityclick", function (event) {
+		    console.log("entity click fetched");
+		    self.skipClick = true;
+		    
+    	});
+
+		me.event.subscribe("mouseup", function (event) {
+		    console.log("mouse click",event.pointerId, event.gameX, event.gameY);
 		    self.mouseClick(event);
     	});
+		
 		
 		this.renderable.setCurrentAnimation('down');
     },
  
     moveTo: false,
     eventData: null,
+    skipClick: false,
     mouseClick: function(event) {
-    	if (this.blockInput)
+
+    	if (this.skipClick) {
+    		me.event.publish("after/main/player/click", [ event ]);
+    		this.skipClick = false;
     		return false;
+    	}
+    	if (this.blockInput) {
+    		me.event.publish("after/main/player/click", [ event ]);
+    		return false;
+    	}
     	this.eventData = event;
     	var self = this;
     	this.firstStep = true;
     	this.reachedDest = false;
-    	this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.round(this.eventData.gameX),Math.round(this.eventData.gameY));
+    	this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.floor(this.eventData.gameX), Math.floor(this.eventData.gameY) - 32);
         this.dest = this.myPath.pop();
 
         /*var tile_size = 32;
@@ -109,12 +125,12 @@ game.PlayerEntity = me.ObjectEntity.extend({
     	})
     	console.log("out of array");
     	this.moveTo = false;*/
-    	
+        me.event.publish("after/main/player/click", [ event ]);
     },
     
     arrivedAtDest: function(event) {
     	this.blockInput = true;
-    	game.ToolBoxHelper.addChosen(this.eventData.gameX, this.eventData.gameY);
+    	game.ToolBoxHelper.addChosen(Math.floor(this.eventData.gameX), Math.floor(this.eventData.gameY) - 32);
     	var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
         if (govPlayer != null && typeof govPlayer != 'undefined')
         	govPlayer.moveToUser();
@@ -122,7 +138,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
     
     chessboard: function() {
         // return chessboard distance to target
-        return Math.max( Math.abs(this.collisionBox.left - this.eventData.gameX), Math.abs(this.collisionBox.top - this.eventData.gameY));
+        return Math.max( Math.abs(this.collisionBox.left - Math.floor(this.eventData.gameX)), Math.abs(this.collisionBox.top - Math.floor(this.eventData.gameY)));
     },
     /* -----
  
@@ -175,7 +191,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
 	        if (this.myPath.length < 1 || (cbdist >= 96 && this.pathAge+5000 < now)) {
 	            // not moving anywhere
 	            // friction takes over
-	            this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.round(this.eventData.gameX),Math.round(this.eventData.gameY));
+	            this.myPath = me.astar.search(this.collisionBox.left,this.collisionBox.top,Math.floor(this.eventData.gameX), Math.floor(this.eventData.gameY) - 32);
 	            this.dest = this.myPath.pop();
 	            this.pathAge = now;
 	        } else {
@@ -361,7 +377,6 @@ game.PlayerEntity = me.ObjectEntity.extend({
     	var govPlayer = me.game.getEntityByName('govermentPlayer')[0];
     	govPlayer.returnHome();
     	var treeItem = me.game.getEntityByName('treeentity')[0];
-    	treeItem.plantTree();
     	
     	me.state.resume();
     	this.dialogActive = false;
@@ -574,7 +589,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
         if (this.vel.x != 0)
         {
           // x axis
-          if (this.vel.x<0)
+          if (this.vel.x < 0)
         	  this.renderable.setCurrentAnimation('right');
           else
         	  this.renderable.setCurrentAnimation('left');
@@ -582,7 +597,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
         else if(this.vel.y != 0)
         {
            // y axis
-           if (this.vel.y<0)
+           if (this.vel.y < 0)
         	   this.renderable.setCurrentAnimation('up');
            else
         	   this.renderable.setCurrentAnimation('down');
@@ -635,11 +650,11 @@ game.GovermentEntity = me.ObjectEntity.extend({
         debugAStar = true;
         if (debugAStar && this.dest) {
             if (this.dest && this.dest.rect) {
-                this.dest.rect.draw(context, "green");
+                this.dest.rect.draw(context, "orange");
             }   
             for (var i = 0, ii = this.myPath.length; i < ii; i+=1) {
                 if (this.myPath[i] && this.myPath[i].rect) {
-                    this.myPath[i].rect.draw(context, "red");
+                    this.myPath[i].rect.draw(context, "blue");
                 }
             }
         }
@@ -658,7 +673,7 @@ game.Goverment = Object.extend({
         // console.log("npcData.coordenadas[0].initStartX:", npcData.coordenadas[0].initStartX);
 
         // Create a new npc *ads_tile_size to transform map coordinates to tile coordinates
-        character = new game.GovermentEntity(31 * 32, 20 * 32, settings);
+        character = new game.GovermentEntity(30 * 32, 11 * 32, settings);
 
         me.game.add(character, 7);
         me.game.sort();
@@ -666,17 +681,44 @@ game.Goverment = Object.extend({
 });
 
 game.TreeEntity = me.CollectableEntity.extend({
+	settings: null,
     // extending the init function is not mandatory
     // unless you need to add some extra initialization
+	mainPlayer: null,
+	data:{},
     init: function(x, y, settings) {
     	settings.spritewidth = 32;
         // call the parent constructor
         this.parent(x, y, settings);
+        this.settings = settings;
+        this.data = this.settings.data;
+        this.mainPlayer = me.game.getEntityByName('mainPlayer')[0];
+        me.input.registerPointerEvent('mousedown', this.collisionBox, this.onMouseDown.bind(this), true, false);
+        me.input.registerPointerEvent('mousemove', this.collisionBox, this.onMouseOver.bind(this), true, false);
     },
- 
+    onMouseOver: function(event) {
+    	console.log("entity over");
+    },
+    onMouseDown: function(event) {
+    	var self = this;
+    	this.mainPlayer.skipClick = true;
+    	me.event.publish("entityclick", [ event ]);
+    	console.log("onmouse down treenetity")
+    	
+    	
+    	game.InfoWindow.show(this.settings);
+    	
+
+    	me.event.subscribe("after/main/player/click", function (event) {
+    		self.mainPlayer.skipClick = false;
+    		console.log("after main player click");
+    	});
+    },
+    
     // this function is called by the engine, when
     // an object is touched by something (here collected)
     onCollision: function() {
+    	
         // do something when collected
  
         // make sure it cannot be collected "again"
@@ -684,11 +726,12 @@ game.TreeEntity = me.CollectableEntity.extend({
         // remove it
         //me.game.remove(this);
     },
-	
-    plantTree: function() {
-	 console.log("planttree");
-	},
-	
+    
+    draw: function(context) {
+    	if (typeof this.settings.manual == "undefined" || this.settings.manual != true)
+    		return false;
+    	this.parent(context);
+    }
 	
 });
 

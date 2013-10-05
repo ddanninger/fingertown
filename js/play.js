@@ -8,6 +8,8 @@ game.PlayScreen = me.ScreenObject.extend({
 	showProfile: true,
 	
     onResetEvent: function() {
+    	game.loadData();
+    	
     	var imgName = "profile_male";
     	if (game.character == "female")
     		imgName = "profile_female";

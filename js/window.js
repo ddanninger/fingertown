@@ -43,18 +43,21 @@ game.ProfileInfo = Object.extend({
 	    
 	    
 	},
+	hide: function() {
+		this.toggle(function() {
+			game.PlayScreen.showProfile = false;
+			var mainPlayer = me.game.getEntityByName('mainPlayer')[0];
+    	    mainPlayer.blockInput = false;
+			game.Toolbox.toggle();
+		});
+	},
 	init: function() {
 		
 		console.log("toolbox init");
 		var self = this;
 		$('#profileinfo .close').bind("click",function() {
-			self.toggle(function() {
-				game.PlayScreen.showProfile = false;
-				var mainPlayer = me.game.getEntityByName('mainPlayer')[0];
-        	    mainPlayer.blockInput = false;
-				game.Toolbox.toggle();
-			});
-		});
+			this.hide();
+		}.bind(this));
 	}
 });
 
@@ -142,6 +145,7 @@ game.CharacterWindow =  Object.extend({
                 //var player = me.game.getEntityByName('mainPlayer')[0];
                 //player.govermentDialogDone();
             	me.state.change(me.state.PLAY);
+            	
             }
             
             // console.log("hide message...");
@@ -150,6 +154,7 @@ game.CharacterWindow =  Object.extend({
             // If game is on pause and the help window is closed then resume game
             if (!me.state.isRunning()) {
                 me.state.resume();
+                
             }
             
         }
@@ -201,7 +206,7 @@ game.DialogWindow =  Object.extend({
     },
     
     "unbind": function() {
-    	
+    	this.dialogwindowShowing = false;
     },
         
     "hide": function hide() {
@@ -230,6 +235,85 @@ game.DialogWindow =  Object.extend({
             // If game is on pause and the help window is closed then resume game
             if (!me.state.isRunning()) {
             	console.log("RUNNING");
+                me.state.resume();
+            }
+            
+        }
+    }
+});
+
+game.InfoWindow =  Object.extend({
+	data: {},
+    "init" : function init() {
+        this.infowindowShowing = false;
+
+        console.log('Init infoLayer class...');
+    },
+    
+    "isShowing" : function isShowing(){
+        return this.infowindowShowing;
+    },
+    
+    "show": function show(data) {
+    	this.data = data;
+    	this.setInfo();
+            if (!this.infowindowShowing){                
+            	$('#infoLayer').reveal({
+                    animation: 'fadeAndPop',                   //fade, fadeAndPop, none
+                    animationspeed: 200,                       //how fast animtions are
+                    closeonbackgroundclick: false,              //if you click background will modal close?
+                    dismissmodalclass: 'close-reveal-modal'    //the class of a button or element that will close an open modal
+               });
+            	
+            	$('#infoLayer .close-reveal-modal').bind('click', function( event ) {
+                	this.unbind();
+                    
+                }.bind(this));
+                
+                $('#infoLayer .ok').bind('click', function( event ) {
+                    console.log("Close event...");
+                    this.hide();
+                }.bind(this));
+
+                // console.log("Show message...");
+                this.infowindowShowing = true;
+            }
+    },
+    
+    "unbind": function() {
+    	this.infowindowShowing = false;
+    },
+    
+    "setInfo": function() {
+    	var img = "tree", text = "나무"; 
+		if (this.data.image == game.ToolBoxHelper.items.TRASH) {
+			img = "trash";
+			text = "쓰레기통";
+		}
+		else if (this.data.image == game.ToolBoxHelper.items.ROADLIGHT) {
+			img = "light";
+			text = "가로등";
+		}
+		else if (this.data.image == game.ToolBoxHelper.items.TRAFFICLIGHT) {
+			img = "traffic";
+			text = "신호등";
+		}
+
+    	$( "#infoLayer .type" ).html('<div><img src="images/'+img+'_big.png"><p>'+text+'</p></div>');
+    },
+        
+    "hide": function hide() {
+        if (this.infowindowShowing){
+        	$('#infoLayer').trigger("reveal:close");
+
+            if(me.state.isCurrent(me.state.PLAY)){
+                
+            }
+            
+
+            this.infowindowShowing = false;
+
+            if (!me.state.isRunning()) {
                 me.state.resume();
             }
             

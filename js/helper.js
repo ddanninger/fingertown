@@ -30,9 +30,9 @@ game.ToolBoxHelper = {
 		game.ToolBoxHelper.addItem(x,y,"treeentity");
 	},
 	addChosen: function(x,y) {
-		game.ToolBoxHelper.addItem(x,y,game.ToolBoxHelper.selected);
+		game.ToolBoxHelper.addItem(x,y,game.ToolBoxHelper.selected,{text: ""});
 	},
-	addItem: function(x, y, name) {
+	addItem: function(x, y, name, data) {
 		var settings = {};
 	    settings.image = name;
 	    settings.spritewidth = 32;
@@ -40,7 +40,10 @@ game.ToolBoxHelper = {
 	    settings.name = "treeentity";
 	    settings.width = 32;
 	    settings.height = 32;
-	    console.log("additem",settings);
+	    settings.manual = true;
+	    settings.data = data;
+	    
+	    console.log("additem",settings,x,y);
 		var item = new game.TreeEntity(x, y , settings);
 		
 		me.game.add(item, 5);

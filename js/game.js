@@ -42,7 +42,14 @@ var game = {
 		    me.event.publish("mousedown", [ event ]);
 		});
 		
+		me.input.registerPointerEvent("mouseup", me.game.viewport, function (event) {
+		    me.event.publish("mouseup", [ event ]);
+		});
+		
 		this.mouseDown = me.event.subscribe("mousedown", function (event) {
+			if (game.PlayScreen.showProfile && me.state.isCurrent(me.state.PLAY)) {
+				game.ProfileInfo.hide();
+			}
 		    console.log(event.pointerId, event.gameX, event.gameY); // etc ...
 		    
 		    /*var pathFinder = new game.Pathfinder(); 
@@ -75,8 +82,10 @@ var game = {
 		this.Toolbox = new game.Toolbox();
 		this.characterWindow = new game.CharacterWindow();
 		this.dialogWindow = new game.DialogWindow();
+		this.InfoWindow = new game.InfoWindow();
 		this.Goverment = new game.Goverment();
 		this.PlayScreen = new game.PlayScreen();
+		
 		me.sys.gravity = 0; // globally set gravity
 		// set the "Play/Ingame" Screen Object
 		me.state.set(me.state.MENU, new game.TitleScreen());
@@ -84,7 +93,7 @@ var game = {
 		me.state.set(me.state.PLAY, this.PlayScreen);
 		
 		
-
+		
 		//me.state.set(me.state.PLAY, new game.PlayScreen());
 		
 		me.state.transition("fade", "#FFFFFF", 250);
@@ -105,6 +114,15 @@ var game = {
 
 		// start the game
 		me.state.change(me.state.MENU);
+	},
+	
+	dataLoaded: false,
+	loadData: function() {
+		console.log("LOAD DATA")
+		if (!this.dataLoaded) {
+			game.DataLoader.getItems();
+			this.dataLoaded = true;
+		}
 	},
 	
 	activateGame: function(character) {
