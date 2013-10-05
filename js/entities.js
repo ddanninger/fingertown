@@ -386,7 +386,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
     context : null,
     removeMe: false,
     init: function(x, y, settings) {
-    	console.log("govplayer",settings);
+    	
     	this.startPos = {x: x, y: y};
     	this.settings = settings;
     	//this.parent(0,0, settings);
@@ -411,7 +411,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
 		this.renderable.addAnimation("right", [1]);
 		
 
-
+		this.renderable.setCurrentAnimation('down');
     },
     
     moveToUser: function() {
@@ -605,7 +605,7 @@ game.Goverment = Object.extend({
         var settings = {};
         settings.image = "govermentPlayer"
         settings.spritewidth = 32;
-        settings.spriteheight = 32;
+        settings.spriteheight = 42;
         settings.name = "govermentPlayer";
         settings.width = 48;
         // console.log("npcData.coordenadas[0].initStartX:", npcData.coordenadas[0].initStartX);
