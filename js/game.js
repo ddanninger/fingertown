@@ -20,6 +20,8 @@ var game = {
 		}
 		
 		me.plugin.register(aStarPlugin, "astar");
+		
+		me.audio.init("mp3");
 
 		// Set a callback to run when loading is complete.
 		me.loader.onload = this.loaded.bind(this);
@@ -78,6 +80,8 @@ var game = {
 
 	// Run on game resources loaded.
 	"loaded" : function() {
+		me.audio.play("livemylife", false, null, 0.5)
+
 		this.ProfileInfo = new game.ProfileInfo();
 		this.Toolbox = new game.Toolbox();
 		this.characterWindow = new game.CharacterWindow();

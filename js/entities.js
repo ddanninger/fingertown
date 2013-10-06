@@ -13,6 +13,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
     firstStep: true,
     reachedDest: true,
     blockInput: false,
+    walkSound: false,
     /* -----
  
     constructor
@@ -89,6 +90,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
     		me.event.publish("after/main/player/click", [ event ]);
     		return false;
     	}
+    	
+    	me.audio.play("click", false, null, 0.5);
+    	
     	this.eventData = event;
     	var self = this;
     	this.firstStep = true;
@@ -294,9 +298,16 @@ game.PlayerEntity = me.ObjectEntity.extend({
 				this.arrivedAtDest(this.eventData);
 			}
 			//this.renderable.setCurrentAnimation('stand-' + this.direction);
-		}else{
+		} else {
+		    // play a "herowalk" sound
+		    if ( !this.walkSound ){
+		        this.walkSound = true;
+                me.audio.play("cartoonwalk",false, (function(){
+                    this.walkSound = false;
+                }).bind(this));
+            }
+
 		}
-        
 		
 		if ( this.direction !== this.lastDirection ) {
            me.game.sort();
@@ -433,6 +444,7 @@ game.GovermentEntity = me.ObjectEntity.extend({
     removeMe: false,
     firstStep: false,
     reachedDest: true,
+    walkSound: false,
     init: function(x, y, settings) {
     	
     	this.startPos = {x: x, y: y};
@@ -590,6 +602,14 @@ game.GovermentEntity = me.ObjectEntity.extend({
 			}
 			//this.renderable.setCurrentAnimation('stand-' + this.direction);
 		}
+        else {
+		    if ( !this.walkSound ){
+		        this.walkSound = true;
+                me.audio.play("walk",false, (function(){
+                    this.walkSound = false;
+                }).bind(this), 0.6);
+            }
+        }
         
         if (this.vel.x != 0)
         {
@@ -705,6 +725,8 @@ game.TreeEntity = me.CollectableEntity.extend({
     	console.log("entity over");
     },
     onMouseDown: function(event) {
+    	me.audio.play("click", false, null, 0.5);
+    	
     	var self = this;
     	this.mainPlayer.skipClick = true;
     	me.event.publish("entityclick", [ event ]);

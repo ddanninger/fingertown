@@ -36,6 +36,12 @@ game.resources = [
     
     {name: "profile_male",  type:"image", src: "images/profile_left_male.png"},
     {name: "profile_female",  type:"image", src: "images/profile_left_female.png"},
+    
+    /* AUDIO */
+    {name: "livemylife", type: "audio",  src: "audio/", channel: 1},
+    {name: "click", type: "audio",  src: "audio/", channel: 2},
+    {name: "cartoonwalk", type: "audio",  src: "audio/", channel: 2},
+    {name: "walk", type: "audio",  src: "audio/", channel: 2},
     /* 
      * Maps. 
      */
