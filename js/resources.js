@@ -26,6 +26,7 @@ game.resources = [
     
     
     {name: "treeentity",  type:"image", src: "tilesets/tree.png"},
+    {name: "treeentitypink",  type:"image", src: "tilesets/pink_tree.png"},
     {name: "treetransparent",  type:"image", src: "tilesets/tree_transparent.png"},
     
     {name: "trashentity",  type:"image", src: "tilesets/trash_can.png"},

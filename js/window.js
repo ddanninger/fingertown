@@ -333,15 +333,15 @@ game.InfoWindow =  Object.extend({
     
     "setInfo": function() {
     	var img = "tree", text = "나무", realText = this.data.data.text; 
-		if (this.data.image == game.ToolBoxHelper.items.TRASH) {
+		if (this.data.name == game.ToolBoxHelper.items.TRASH) {
 			img = "trash";
 			text = "쓰레기통";
 		}
-		else if (this.data.image == game.ToolBoxHelper.items.ROADLIGHT) {
+		else if (this.data.name == game.ToolBoxHelper.items.ROADLIGHT) {
 			img = "light";
 			text = "가로등";
 		}
-		else if (this.data.image == game.ToolBoxHelper.items.TRAFFICLIGHT) {
+		else if (this.data.name == game.ToolBoxHelper.items.TRAFFICLIGHT) {
 			img = "traffic";
 			text = "신호등";
 		}

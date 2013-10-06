@@ -7,7 +7,7 @@ var game = {
 		me.state.set(me.state.LOADING, new game.LoadingScreen());
 		me.state.change(me.state.LOADING);
 		// Initialize the video.
-		if (!me.video.init("screen", 1024, 768, true, 'auto')) {
+		if (!me.video.init("screen", 1024, 768, true, 0)) {
 			alert("Your browser does not support HTML5 canvas.");
 			return;
 		}

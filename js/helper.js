@@ -33,6 +33,12 @@ game.ToolBoxHelper = {
 		return game.ToolBoxHelper.addItem(x,y,game.ToolBoxHelper.selected,{text: text});
 	},
 	addItem: function(x, y, name, data) {
+		
+		if (name == "treeentity" && game.character == "female") {
+
+			name = "treeentitypink";
+		}
+			
 		var settings = {};
 	    settings.image = name;
 	    settings.spritewidth = 32;
